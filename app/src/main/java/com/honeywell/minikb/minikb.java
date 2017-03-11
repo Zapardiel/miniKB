@@ -10,7 +10,6 @@ import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
-import android.widget.Toast;
 
 public class minikb extends InputMethodService
         implements KeyboardView.OnKeyboardActionListener{
@@ -73,7 +72,7 @@ public class minikb extends InputMethodService
                         KeyEvent.FLAG_SOFT_KEYBOARD | KeyEvent.FLAG_KEEP_TOUCH_MODE,
                         InputDevice.SOURCE_KEYBOARD));
                 ic.sendKeyEvent(new KeyEvent(
-                        SystemClock.uptimeMillis(), SystemClock.uptimeMillis(),
+                        SystemClock.uptimeMillis(), SystemClock.uptimeMillis()+100,
                         KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DEL,
                         0,
                         0,
@@ -90,7 +89,7 @@ public class minikb extends InputMethodService
             case Keyboard.KEYCODE_DONE:
 //                Toast.makeText(this, "Enter", Toast.LENGTH_SHORT).show();
                 ic.sendKeyEvent(new KeyEvent(
-                        SystemClock.uptimeMillis(), SystemClock.uptimeMillis(),
+                        SystemClock.uptimeMillis(), SystemClock.uptimeMillis()+100,
                         KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER,
                         0,
                         0,
@@ -99,7 +98,7 @@ public class minikb extends InputMethodService
                         KeyEvent.FLAG_SOFT_KEYBOARD | KeyEvent.FLAG_KEEP_TOUCH_MODE | KeyEvent.FLAG_EDITOR_ACTION,
                         InputDevice.SOURCE_KEYBOARD));
                 ic.sendKeyEvent(new KeyEvent(
-                        SystemClock.uptimeMillis(), SystemClock.uptimeMillis(),
+                        SystemClock.uptimeMillis(), SystemClock.uptimeMillis()+100,
                         KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER,
                         0,
                         0,
@@ -109,8 +108,24 @@ public class minikb extends InputMethodService
                         InputDevice.SOURCE_KEYBOARD));
                 break;
             case 131:
-                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_F1));
-                ic.sendKeyEvent(new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_F1));
+                ic.sendKeyEvent(new KeyEvent(
+                        SystemClock.uptimeMillis(), SystemClock.uptimeMillis()+100,
+                        KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_F1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        KeyEvent.FLAG_SOFT_KEYBOARD | KeyEvent.FLAG_KEEP_TOUCH_MODE | KeyEvent.FLAG_EDITOR_ACTION,
+                        InputDevice.SOURCE_KEYBOARD));
+                ic.sendKeyEvent(new KeyEvent(
+                        SystemClock.uptimeMillis(), SystemClock.uptimeMillis()+100,
+                        KeyEvent.ACTION_UP, KeyEvent.KEYCODE_F1,
+                        0,
+                        0,
+                        0,
+                        0,
+                        KeyEvent.FLAG_SOFT_KEYBOARD | KeyEvent.FLAG_KEEP_TOUCH_MODE | KeyEvent.FLAG_EDITOR_ACTION,
+                        InputDevice.SOURCE_KEYBOARD));
                 break;
             default:
                 char code = (char) primaryCode;
