@@ -10,25 +10,28 @@ import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
+import android.widget.Toast;
 
 public class minikb extends InputMethodService
-        implements KeyboardView.OnKeyboardActionListener{
+        implements KeyboardView.OnKeyboardActionListener {
 
     private KeyboardView kv;
-    private Keyboard keyboard;
+    private Keyboard keyboard_qwerty;
+    private Keyboard keyboard_symbols;
 
     private boolean caps = false;
 
     @Override
     public View onCreateInputView() {
         kv = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard, null);
-        keyboard = new Keyboard(this, R.xml.qwerty);
-        kv.setKeyboard(keyboard);
+        keyboard_qwerty = new Keyboard(this, R.xml.qwerty);
+        keyboard_symbols = new Keyboard(this, R.xml.symbols);
+        kv.setKeyboard(keyboard_qwerty);
         kv.setOnKeyboardActionListener(this);
         return kv;
     }
 
-    private void playClick(int keyCode){
+    private void playClick(int keyCode) {
         AudioManager am = (AudioManager) getSystemService(AUDIO_SERVICE);
         switch (keyCode) {
             case 32:
@@ -60,36 +63,40 @@ public class minikb extends InputMethodService
 
         InputConnection ic = getCurrentInputConnection();
         playClick(primaryCode);
-        switch (primaryCode){
+        switch (primaryCode) {
+            case Keyboard.KEYCODE_MODE_CHANGE:
+                Toast.makeText(this, "Hemos pulsado CHANGE", Toast.LENGTH_SHORT).show();
+                kv.setKeyboard(keyboard_symbols);
+                break;
             case Keyboard.KEYCODE_DELETE:
                 ic.sendKeyEvent(new KeyEvent(
-                        SystemClock.uptimeMillis(), SystemClock.uptimeMillis()+100,
+                        SystemClock.uptimeMillis(), SystemClock.uptimeMillis() + 100,
                         KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL,
                         0,
                         0,
                         0,
                         0,
                         KeyEvent.FLAG_SOFT_KEYBOARD | KeyEvent.FLAG_KEEP_TOUCH_MODE,
-                        InputDevice.SOURCE_KEYBOARD));
+                        InputDevice.SOURCE_CLASS_BUTTON));
                 ic.sendKeyEvent(new KeyEvent(
-                        SystemClock.uptimeMillis(), SystemClock.uptimeMillis()+100,
+                        SystemClock.uptimeMillis(), SystemClock.uptimeMillis() + 100,
                         KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DEL,
                         0,
                         0,
                         0,
                         0,
                         KeyEvent.FLAG_SOFT_KEYBOARD | KeyEvent.FLAG_KEEP_TOUCH_MODE,
-                        InputDevice.SOURCE_KEYBOARD));
+                        InputDevice.SOURCE_CLASS_BUTTON));
                 break;
             case Keyboard.KEYCODE_SHIFT:
                 caps = !caps;
-                keyboard.setShifted(caps);
+                keyboard_qwerty.setShifted(caps);
                 kv.invalidateAllKeys();
                 break;
             case Keyboard.KEYCODE_DONE:
 //                Toast.makeText(this, "Enter", Toast.LENGTH_SHORT).show();
                 ic.sendKeyEvent(new KeyEvent(
-                        SystemClock.uptimeMillis(), SystemClock.uptimeMillis()+100,
+                        SystemClock.uptimeMillis(), SystemClock.uptimeMillis() + 100,
                         KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER,
                         0,
                         0,
@@ -98,7 +105,7 @@ public class minikb extends InputMethodService
                         KeyEvent.FLAG_SOFT_KEYBOARD | KeyEvent.FLAG_KEEP_TOUCH_MODE | KeyEvent.FLAG_EDITOR_ACTION,
                         InputDevice.SOURCE_KEYBOARD));
                 ic.sendKeyEvent(new KeyEvent(
-                        SystemClock.uptimeMillis(), SystemClock.uptimeMillis()+100,
+                        SystemClock.uptimeMillis(), SystemClock.uptimeMillis() + 100,
                         KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER,
                         0,
                         0,
@@ -109,27 +116,27 @@ public class minikb extends InputMethodService
                 break;
             case 131:
                 ic.sendKeyEvent(new KeyEvent(
-                        SystemClock.uptimeMillis(), SystemClock.uptimeMillis()+100,
+                        SystemClock.uptimeMillis(), SystemClock.uptimeMillis() + 100,
                         KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_F1,
                         0,
                         0,
                         0,
                         0,
-                        KeyEvent.FLAG_SOFT_KEYBOARD | KeyEvent.FLAG_KEEP_TOUCH_MODE | KeyEvent.FLAG_EDITOR_ACTION,
-                        InputDevice.SOURCE_KEYBOARD));
+                        0,
+                        InputDevice.SOURCE_CLASS_BUTTON));
                 ic.sendKeyEvent(new KeyEvent(
-                        SystemClock.uptimeMillis(), SystemClock.uptimeMillis()+100,
+                        SystemClock.uptimeMillis(), SystemClock.uptimeMillis() + 100,
                         KeyEvent.ACTION_UP, KeyEvent.KEYCODE_F1,
                         0,
                         0,
                         0,
                         0,
-                        KeyEvent.FLAG_SOFT_KEYBOARD | KeyEvent.FLAG_KEEP_TOUCH_MODE | KeyEvent.FLAG_EDITOR_ACTION,
-                        InputDevice.SOURCE_KEYBOARD));
+                        0,
+                        InputDevice.SOURCE_CLASS_BUTTON));
                 break;
             default:
                 char code = (char) primaryCode;
-                if(Character.isLetter(code) && caps) {
+                if (Character.isLetter(code) && caps) {
                     code = Character.toUpperCase(code);
                 }
                 ic.commitText(String.valueOf(code), 1);
