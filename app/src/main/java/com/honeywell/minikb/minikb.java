@@ -26,7 +26,7 @@ public class minikb extends InputMethodService
         kv = (KeyboardView) getLayoutInflater().inflate(R.layout.keyboard, null);
         keyboard_qwerty = new Keyboard(this, R.xml.qwerty);
         keyboard_symbols = new Keyboard(this, R.xml.symbols);
-        kv.setKeyboard(keyboard_qwerty);
+        kv.setKeyboard(keyboard_symbols);
         kv.setOnKeyboardActionListener(this);
         return kv;
     }
@@ -66,25 +66,22 @@ public class minikb extends InputMethodService
         switch (primaryCode) {
             case Keyboard.KEYCODE_MODE_CHANGE:
                 Toast.makeText(this, "Hemos pulsado CHANGE", Toast.LENGTH_SHORT).show();
-                kv.setKeyboard(keyboard_symbols);
+                if (kv.getKeyboard().equals(keyboard_qwerty)){
+                    kv.setKeyboard(keyboard_symbols);
+                }
+                else{
+                    kv.setKeyboard(keyboard_qwerty);
+                }
                 break;
             case Keyboard.KEYCODE_DELETE:
                 ic.sendKeyEvent(new KeyEvent(
                         SystemClock.uptimeMillis(), SystemClock.uptimeMillis() + 100,
-                        KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL,
-                        0,
-                        0,
-                        0,
-                        0,
+                        KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_DEL,0,0,0,0,
                         KeyEvent.FLAG_SOFT_KEYBOARD | KeyEvent.FLAG_KEEP_TOUCH_MODE,
                         InputDevice.SOURCE_CLASS_BUTTON));
                 ic.sendKeyEvent(new KeyEvent(
                         SystemClock.uptimeMillis(), SystemClock.uptimeMillis() + 100,
-                        KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DEL,
-                        0,
-                        0,
-                        0,
-                        0,
+                        KeyEvent.ACTION_UP, KeyEvent.KEYCODE_DEL,0,0,0,0,
                         KeyEvent.FLAG_SOFT_KEYBOARD | KeyEvent.FLAG_KEEP_TOUCH_MODE,
                         InputDevice.SOURCE_CLASS_BUTTON));
                 break;
@@ -97,41 +94,23 @@ public class minikb extends InputMethodService
 //                Toast.makeText(this, "Enter", Toast.LENGTH_SHORT).show();
                 ic.sendKeyEvent(new KeyEvent(
                         SystemClock.uptimeMillis(), SystemClock.uptimeMillis() + 100,
-                        KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER,
-                        0,
-                        0,
-                        0,
-                        0,
+                        KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_ENTER,0,0,0,0,
                         KeyEvent.FLAG_SOFT_KEYBOARD | KeyEvent.FLAG_KEEP_TOUCH_MODE | KeyEvent.FLAG_EDITOR_ACTION,
                         InputDevice.SOURCE_KEYBOARD));
                 ic.sendKeyEvent(new KeyEvent(
                         SystemClock.uptimeMillis(), SystemClock.uptimeMillis() + 100,
-                        KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER,
-                        0,
-                        0,
-                        0,
-                        0,
+                        KeyEvent.ACTION_UP, KeyEvent.KEYCODE_ENTER,0,0,0,0,
                         KeyEvent.FLAG_SOFT_KEYBOARD | KeyEvent.FLAG_KEEP_TOUCH_MODE | KeyEvent.FLAG_EDITOR_ACTION,
                         InputDevice.SOURCE_KEYBOARD));
                 break;
             case 131:
                 ic.sendKeyEvent(new KeyEvent(
                         SystemClock.uptimeMillis(), SystemClock.uptimeMillis() + 100,
-                        KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_F1,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
+                        KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_F1,0,0,0,0,0,
                         InputDevice.SOURCE_CLASS_BUTTON));
                 ic.sendKeyEvent(new KeyEvent(
                         SystemClock.uptimeMillis(), SystemClock.uptimeMillis() + 100,
-                        KeyEvent.ACTION_UP, KeyEvent.KEYCODE_F1,
-                        0,
-                        0,
-                        0,
-                        0,
-                        0,
+                        KeyEvent.ACTION_UP, KeyEvent.KEYCODE_F1,0,0,0,0,0,
                         InputDevice.SOURCE_CLASS_BUTTON));
                 break;
             default:
