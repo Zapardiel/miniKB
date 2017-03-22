@@ -10,7 +10,6 @@ import android.view.InputDevice;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.InputConnection;
-import android.widget.Toast;
 
 public class minikb extends InputMethodService
         implements KeyboardView.OnKeyboardActionListener {
@@ -65,7 +64,7 @@ public class minikb extends InputMethodService
         playClick(primaryCode);
         switch (primaryCode) {
             case Keyboard.KEYCODE_MODE_CHANGE:
-                Toast.makeText(this, "Hemos pulsado CHANGE", Toast.LENGTH_SHORT).show();
+//                Toast.makeText(this, "Hemos pulsado CHANGE", Toast.LENGTH_SHORT).show();
                 if (kv.getKeyboard().equals(keyboard_qwerty)){
                     kv.setKeyboard(keyboard_symbols);
                 }
